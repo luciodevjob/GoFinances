@@ -25,7 +25,6 @@ color: ${({theme}) => theme.colors.shape};
 font-family: ${({theme}) => theme.fonts.regular};
 font-size: ${RFValue(18)}px;
 margin-bottom: 16px;
-
 `
 
 export const Form = styled.View`
