@@ -62,9 +62,21 @@ export function Dashboard() {
   
       return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', { month: 'long' })}`;
     }
+    const dataKey = '@gofinances:transactions';
+    async function handleRemoveSkill(dataKey: string) {
+     
+        try {
+            await AsyncStorage.removeItem(dataKey);
+            return true;
+        }
+        catch(exception) {
+            return false;
+        }
+    }
+   
 
     async function loadTransactions(){
-      const dataKey = '@gofinances:transactions';
+      
       const response = await AsyncStorage.getItem(dataKey);
       const transactions = response ? JSON.parse(response) : [];
 
@@ -101,7 +113,7 @@ export function Dashboard() {
 
          
         return {
-          id: item.id,
+          id:String(item.id),
           name: item.name,
           amount,
           type: item.type,
@@ -214,6 +226,7 @@ export function Dashboard() {
                 data={transactions}
                 keyExtractor= {item => item.id}
                 renderItem={({item}) => <TransactionCard 
+                onPress={() => handleRemoveSkill(item.id)}
                 data={item}/>}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{

@@ -1,6 +1,7 @@
 import React from 'react';
+import { RectButton } from 'react-native-gesture-handler';
 import { categories } from '../../utils/categories';
-import { Amount, Container, Title, Footer, Categories, Icon, CategoryNames, Date} from './styles';
+import { Amount, Container, Title, Footer, Categories, Icon, CategoryNames, Date, IconClose, Header, Collun, IconButton} from './styles';
 
 interface Categories {
     name: string;
@@ -14,31 +15,42 @@ export interface TransactionsProps {
     category: string;
     date: string;
 }
-interface Props {
-    data: TransactionsProps 
+interface Props extends RectButton {
+    data: TransactionsProps;
+    deleteItem: RectButton
 
 }
 
-export function TransactionCard({data}: Props) {
+export function TransactionCard({data, deleteItem, ...rest}: Props) {
   const [category] = categories.filter(
       item => item.key === data.category
   );
     
     return (
     <Container>
+        <Header>
+        <Collun>
         <Title>{data.name}</Title>
 
         <Amount type={data.type}>
         {data.type === 'negative' && '- '}
         {data.amount}
         </Amount>
-        
+        </Collun>
 
+        <IconButton 
+       
+        {...rest}>
+        <IconClose name={"close"}/>
+        </IconButton>
+
+        </Header>
         <Footer>
             <Categories>
-            <Icon type={data.type} 
-            name={category.icon}/>
-            <CategoryNames type={data.type}>{category.name}</CategoryNames>
+            <Icon name={category.icon}/>
+            <CategoryNames type={data.type}>
+                {category.name}
+            </CategoryNames>
             </Categories>
             <Date>{data.date}</Date>
 

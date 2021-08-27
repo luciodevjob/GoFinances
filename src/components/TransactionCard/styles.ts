@@ -1,6 +1,7 @@
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import { Feather } from '@expo/vector-icons'
+import { Feather, AntDesign } from '@expo/vector-icons'
 import styled from 'styled-components/native';
+import { BorderlessButton, RectButton } from 'react-native-gesture-handler';
 
 interface colorsProps {
     type: 'positive' | 'negative';
@@ -14,6 +15,15 @@ padding: 17px 24px;
 
 margin-bottom: 16px;
 `;
+
+export const Header = styled.View`
+justify-content: space-between;
+flex-direction: row;
+`
+export const Collun = styled.View`
+flex-direction: column;
+flex: 1;
+`
 
 export const Title = styled.Text`
 font-family: ${({ theme}) => theme.fonts.regular};
@@ -39,13 +49,16 @@ export const Categories = styled.View`
 flex-direction: row;
 align-items: center;
 `
-
-export const Icon = styled(Feather)<colorsProps>`
+export const IconClose = styled(AntDesign)`
 font-size: ${RFValue(20)}px;
 color: ${({ theme }) => theme.colors.text};
+`
 
-
-
+export const IconButton = styled(RectButton)``
+export const Icon = styled(Feather)<colorsProps>`
+flex: 1;
+font-size: ${RFValue(20)}px;
+color: ${({ theme }) => theme.colors.text};
 `
 
 export const CategoryNames = styled.Text<colorsProps>`
