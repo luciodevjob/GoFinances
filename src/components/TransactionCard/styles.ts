@@ -17,12 +17,13 @@ margin-bottom: 16px;
 `;
 
 export const Header = styled.View`
+width: 100%;
 justify-content: space-between;
 flex-direction: row;
 `
 export const Collun = styled.View`
-flex-direction: column;
-flex: 1;
+
+
 `
 
 export const Title = styled.Text`
@@ -50,13 +51,18 @@ flex-direction: row;
 align-items: center;
 `
 export const IconClose = styled(AntDesign)`
-font-size: ${RFValue(20)}px;
+
+font-size: ${RFValue(15)}px;
 color: ${({ theme }) => theme.colors.text};
 `
 
-export const IconButton = styled(RectButton)``
+export const IconButton = styled(RectButton)`
+width: 20px;
+height: 20px;
+align-items: center;
+justify-content: center;
+`
 export const Icon = styled(Feather)<colorsProps>`
-flex: 1;
 font-size: ${RFValue(20)}px;
 color: ${({ theme }) => theme.colors.text};
 `
@@ -65,7 +71,7 @@ export const CategoryNames = styled.Text<colorsProps>`
 font-size: ${RFValue(14)}px;
 color: ${({ theme }) => theme.colors.text};
 
-margin-left: 17px;
+margin-left: 5px;
 `
 
 export const Date = styled.Text`

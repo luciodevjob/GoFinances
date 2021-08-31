@@ -1,5 +1,5 @@
 import React from 'react';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
 import { categories } from '../../utils/categories';
 import { Amount, Container, Title, Footer, Categories, Icon, CategoryNames, Date, IconClose, Header, Collun, IconButton} from './styles';
 
@@ -15,13 +15,13 @@ export interface TransactionsProps {
     category: string;
     date: string;
 }
-interface Props extends RectButton {
+interface Props extends RectButtonProps {
     data: TransactionsProps;
-    deleteItem: RectButton
+
 
 }
 
-export function TransactionCard({data, deleteItem, ...rest}: Props) {
+export function TransactionCard({data, ...rest}: Props) {
   const [category] = categories.filter(
       item => item.key === data.category
   );
@@ -39,7 +39,6 @@ export function TransactionCard({data, deleteItem, ...rest}: Props) {
         </Collun>
 
         <IconButton 
-       
         {...rest}>
         <IconClose name={"close"}/>
         </IconButton>

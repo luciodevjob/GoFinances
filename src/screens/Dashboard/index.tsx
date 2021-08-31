@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState, } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Alert } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { 
   parseISO, 
@@ -63,16 +63,8 @@ export function Dashboard() {
       return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', { month: 'long' })}`;
     }
     const dataKey = '@gofinances:transactions';
-    async function handleRemoveSkill(dataKey: string) {
-     
-        try {
-            await AsyncStorage.removeItem(dataKey);
-            return true;
-        }
-        catch(exception) {
-            return false;
-        }
-    }
+    
+   
    
 
     async function loadTransactions(){
@@ -160,6 +152,28 @@ export function Dashboard() {
 
     setIsLoading(false)
     }
+    async function handleRemoveSkill(transactionId: string) {
+      const response = await AsyncStorage.getItem(dataKey);
+      const storagedTransactions = response ? JSON.parse(response) : [];
+     
+      const filteredTransactions = storagedTransactions
+      .filter((transaction: DataListProps) => transaction.id !== transactionId);
+    
+      setTransactions(filteredTransactions);
+      await AsyncStorage.setItem(dataKey, JSON.stringify(filteredTransactions));
+
+      loadTransactions()
+      }
+      function alerta(name: string, id: string) {
+        Alert.alert(`Você deseja deletar ${String(name)}`,
+        "",
+        [
+          {text: 'Cancelar', },
+          {text: 'Deletar', onPress: () => handleRemoveSkill(id) },
+        ],
+          {cancelable: false}
+        )}
+
     useEffect(() => {
       loadTransactions();
     },[]);
@@ -226,7 +240,7 @@ export function Dashboard() {
                 data={transactions}
                 keyExtractor= {item => item.id}
                 renderItem={({item}) => <TransactionCard 
-                onPress={() => handleRemoveSkill(item.id)}
+                onPress={ () => alerta(item.name, item.id)}
                 data={item}/>}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
