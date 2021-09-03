@@ -47,7 +47,7 @@ export function Register() {
     const [transactionType, setTransactionType] = useState('')
     const [categorySelect, setCategorySelect]  = useState(false)
       
-    const dataKey = `@gofinances:transactions_user:${user.id}`
+    
      
     const [category, setCategory] = useState({
         key: 'category',
@@ -105,7 +105,7 @@ export function Register() {
        
           
       try {
-       
+        const dataKey = `@gofinances:transactions_user:${user.id}`;
         const data = await AsyncStorage.getItem(dataKey);
         const currentData = data ? JSON.parse(data) : [];
 
@@ -127,7 +127,7 @@ export function Register() {
           console.log(error);
           Alert.alert('Não foi possivel salvar')
       }
-      console.log(dataKey)
+   
     }
     
     
