@@ -30,6 +30,7 @@ import 'intl';
 import 'intl/locale-data/jsonp/pt-BR';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from 'styled-components';
+import { useAuth } from '../../Hooks/auth';
 
 export interface DataListProps extends TransactionsProps {
     id: string;
@@ -48,24 +49,32 @@ export function Dashboard() {
     const [isLoading, setIsLoading] = useState(true);
     const [transactions, setTransactions] = useState<DataListProps[]>([]);
     const [HighlightData, setHighlightData] = useState<HighlightData>({} as HighlightData)
+    
     const theme = useTheme()
+    const {signOut, user}= useAuth()
   
    
     function getLastTransactionDate(
       collection: DataListProps[],
       type: 'positive' | 'negative'
     ){
+      const collectionFilttered = collection
+      .filter(transaction => transaction.type === type)
+
+      if(collectionFilttered.length === 0)
+      return '0';
+
       const lastTransaction = new Date(
       Math.max.apply(Math, collection
-      .filter(transaction => transaction.type === type)
+        .filter(transaction => transaction.type === type)
       .map(transaction => new Date(transaction.date).getTime())))
   
       return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR', { month: 'long' })}`;
     }
-    const dataKey = '@gofinances:transactions';
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     
    
-   
+  
 
     async function loadTransactions(){
       
@@ -164,7 +173,7 @@ export function Dashboard() {
 
       loadTransactions()
       }
-      function alerta(name: string, id: string) {
+      function alerta(name: string, id: string,) {
         Alert.alert(`Você deseja deletar ${String(name)}`,
         "",
         [
@@ -173,6 +182,21 @@ export function Dashboard() {
         ],
           {cancelable: false}
         )}
+
+
+      function loggOff() {
+        {
+          Alert.alert(`Você deseja desconectar?`,
+          "",
+          [
+            {text: 'Cancelar', },
+            {text: 'Desconectar', onPress: () =>  signOut()},
+          ],
+            {cancelable: false}
+          )}
+      }
+
+       
 
     useEffect(() => {
       loadTransactions();
@@ -196,16 +220,16 @@ export function Dashboard() {
                 <UserContainer>
                 <UserInfo>
                     <Photo 
-                        source= {{uri: 'https://avatars.githubusercontent.com/u/79321204?v=4'}}
+                        source= {{uri: user.photo}}
                     />
                     <User>
                         <UserGreeting>Olá,</UserGreeting>
-                        <UserName>Lucio</UserName>
+                        <UserName>{user.name}</UserName>
                     </User>
                 
                     
                 </UserInfo>
-                <LougoutButton>
+                <LougoutButton onPress={loggOff}>
                 <Icon name="power"/>
                 </LougoutButton>
                 </UserContainer>

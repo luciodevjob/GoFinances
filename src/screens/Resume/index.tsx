@@ -28,6 +28,7 @@ import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useFocusEffect } from '@react-navigation/native';
 import { LoadContainer } from '../Dashboard/styles';
 import { ActivityIndicator } from 'react-native';
+import { useAuth } from '../../Hooks/auth';
 
 
 interface TransactionData {
@@ -53,6 +54,7 @@ export function Resume(){
   const [isLoading, setIsLoading] = useState(false);
 
   const theme = useTheme();
+  const {user} = useAuth()
 
   function handleDateChange(action: 'next' | 'prev') {
     if(action === "next") {
@@ -69,7 +71,7 @@ export function Resume(){
 
   async function loadData() {
     setIsLoading(true);
-    const dataKey = '@gofinances:transactions';
+    const dataKey = `@gofinances:transactions_user:${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const responseFormatted = response ? JSON.parse(response) : [];
 

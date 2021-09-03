@@ -17,6 +17,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
+import { useAuth } from '../../Hooks/auth';
+
 
 interface FormProps {
  name: string;
@@ -28,6 +30,8 @@ type NavigationProps = {
    navigate:(screen:string) => void;
     
 }
+
+const {user}= useAuth()
 
 const schema = Yup.object().shape({
     name: Yup.string().required('O nome é obrigatorio'),
@@ -43,7 +47,7 @@ export function Register() {
     const [transactionType, setTransactionType] = useState('')
     const [categorySelect, setCategorySelect]  = useState(false)
       
-    const dataKey = '@gofinances:transactions';
+    const dataKey = `@gofinances:transactions_user:${user.id}`
      
     const [category, setCategory] = useState({
         key: 'category',
